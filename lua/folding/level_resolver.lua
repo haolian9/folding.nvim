@@ -15,7 +15,7 @@ local ts = vim.treesitter
 ---@type folding.TreeWalkers
 local tree_walkers = {}
 do
-  function tree_walkers.lua(cls, line_level, node, parent_level)
+  function tree_walkers:lua(line_level, node, parent_level)
     local r0, _, r1, _ = node:range()
     local my_level = parent_level
     if node:type() ~= "block" then
@@ -29,11 +29,11 @@ do
       end
     end
     for i = 0, node:named_child_count() - 1 do
-      cls:lua(line_level, node:named_child(i), my_level)
+      self:lua(line_level, node:named_child(i), my_level)
     end
   end
 
-  function tree_walkers.zig(cls, line_level, node, parent_level)
+  function tree_walkers:zig(line_level, node, parent_level)
     local r0, _, r1, _ = node:range()
     local my_level = parent_level
     if line_level[r0] == nil then
@@ -45,11 +45,11 @@ do
       line_level[r1] = my_level
     end
     for i = 0, node:named_child_count() - 1 do
-      cls:zig(line_level, node:named_child(i), my_level)
+      self:zig(line_level, node:named_child(i), my_level)
     end
   end
 
-  function tree_walkers.python(cls, line_level, node, parent_level)
+  function tree_walkers:python(line_level, node, parent_level)
     local r0 = node:start()
     local my_level = parent_level
     if node:type() ~= "block" then
@@ -59,11 +59,11 @@ do
       end
     end
     for i = 0, node:named_child_count() - 1 do
-      cls:python(line_level, node:named_child(i), my_level)
+      self:python(line_level, node:named_child(i), my_level)
     end
   end
 
-  function tree_walkers.c(cls, line_level, node, parent_level)
+  function tree_walkers:c(line_level, node, parent_level)
     local r0, _, r1, _ = node:range()
     local my_level = parent_level
     if node:type() ~= "block" then
@@ -77,7 +77,7 @@ do
       end
     end
     for i = 0, node:named_child_count() - 1 do
-      cls:c(line_level, node:named_child(i), my_level)
+      self:c(line_level, node:named_child(i), my_level)
     end
   end
 
@@ -87,8 +87,7 @@ end
 ---@type folding.TipWalkers
 local tip_walkers = {}
 do
-  function tip_walkers.zig(cls, tree_walker, line_level, tip)
-    _ = cls
+  function tip_walkers:zig(tree_walker, line_level, tip)
     local r0, _, r1, _ = tip:range()
     local lv = r0 ~= r1 and 1 or 0
     line_level[r0] = lv
@@ -99,8 +98,7 @@ do
     end
   end
 
-  function tip_walkers.python(cls, tree_walker, line_level, tip)
-    _ = cls
+  function tip_walkers:python(tree_walker, line_level, tip)
     local r0, _, r1, _ = tip:range()
     local lv = r0 ~= r1 and 1 or 0
     line_level[r0] = lv
