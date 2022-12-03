@@ -5,7 +5,7 @@ Providing foldexpr for several languages based on nvim's treesitter
 * it is not a serious project
 * it just works
 * no more languages are planned
-* supported languages: python, zig, lua
+* supported languages: python, zig, lua, c, go
 
 ## prerequisites
 
